@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheItalianPoetry - La Tua Dashboard Artistica</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+	
+	    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="app.js" defer=""></script>
+	
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo">
+            <i class="fa-solid fa-feather-pointed"></i>
+            <span>TheItalianPoetry</span>
+        </div>
+        <nav class="main-nav">
+            <a href="#leaderboard">Classifica</a>
+            <a href="#" id="how-to-link">Come Partecipare</a>
+            <a href="#" id="about-us-link">Chi Siamo</a>
+        </nav>
+        <div class="header-actions">
+            <div id="auth-buttons">
+                <button id="login-google-btn" class="button-social google">
+                    <i class="fab fa-google"></i> Accedi con Google
+                </button>
+            </div>
+            
+            <div id="user-info" class="hidden">
+                <span id="user-email"></span>
+                <button id="logout-btn" class="button-secondary">Logout</button>
+            </div>
+
+            <button id="open-submission-modal-btn" class="button-primary">Partecipa!</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>Le Voci Più Amate del Mese!</h1>
+                <p>Scopri i talenti emergenti della nostra community votati da te e pubblicati su Instagram! Sostieni i tuoi artisti preferiti e lasciati ispirare.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="content-area">
+                <section class="info-card">
+                    <h2>Scrivi, Brilla, Cresci: La Nostra Community per la Scrittura Creativa</h2>
+                    <p>Benvenuto nella community dove le tue parole prendono vita e la tua creatività viene premiata! Qui crediamo che il vero valore della scrittura risieda nella sua bellezza, originalità e capacità di emozionare.</p>
+                    <h3>Come Funziona?</h3>
+                    <p>Il cuore della nostra piattaforma è semplice: più la tua scrittura è apprezzata, più visibilità otterrai. Immagina di condividere le tue storie, poesie o articoli e di vederli riconosciuti per il loro merito. La giuria popolare sei tu! I membri della community avranno il potere di votare i contenuti che ritengono più coinvolgenti e di qualità. I lavori più votati scaleranno le classifiche, raggiungendo un pubblico sempre più vasto e meritando la ribalta che la tua arte merita. Sarà proprio la giuria popolare a decidere quali poesie verranno poi postate sulla nostra pagina Instagram ufficiale! Questo è il modo principale per dare visibilità ai tuoi testi e permetterti di crescere come scrittore. I 10 classificati verranno aggiornati mese per mese, garantendo sempre nuove opportunità e stimoli.</p>
+                    <h3>Un Ecosistema Sostenibile</h3>
+                    <p>Per garantire che questa community rimanga sempre accessibile, dinamica e priva di costi per i suoi membri, il nostro ecosistema si basa su un modello di sostenibilità tramite annunci pubblicitari. Ma non temere! Ci impegniamo a mantenere questi annunci non invasivi, garantendo un'esperienza di lettura fluida e piacevole. La tua immersione nel mondo della scrittura non sarà interrotta da banner o pop-up fastidiosi.</p>
+                    <h3>Disclaimer: Lo Scopo della Nostra Community</h3>
+                    <p>Questo progetto nasce con l'intento di promuovere la scrittura creativa, celebrare il talento e costruire una comunità di lettori e scrittori appassionati. Vogliamo creare uno spazio dove l'ispirazione fiorisce e dove ogni voce, se autentica e ben espressa, può trovare il suo pubblico. La trasparenza e il rispetto per l'esperienza utente sono i nostri pilastri. Il sostegno pubblicitario è il mezzo per raggiungere questo nobile fine, garantendo la sostenibilità e la crescita di questa piattaforma, sempre nel rispetto della tua privacy e della tua esperienza di navigazione.</p>
+                </section>
+
+                <h2 class="section-title" id="leaderboard">Classifica Principale</h2>
+                <div class="poems-list">
+                    </div>
+            </div>
+
+            <aside class="sidebar">
+                <div class="sidebar-box">
+                    <h3>Poesie del Mese</h3>
+                    <div class="search-box">
+                        <input type="text" id="search-poems" placeholder="Cerca titolo o autore..." aria-label="Cerca poesie">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                    <div class="filter-options">
+                        <label for="sort-by">Ordina per:</label>
+                        <select id="sort-by" aria-label="Ordina poesie per">
+                            <option value="recent">Più Recenti</option>
+                            <option value="popular">Più Votate</option>
+                            <option value="title-asc">Titolo (A-Z)</option>
+                            <option value="title-desc">Titolo (Z-A)</option>
+                        </select>
+                    </div>
+                    <div id="monthly-poems-list" class="mini-poems-list">
+                        </div>
+                    <a href="#leaderboard" class="button-secondary full-width-btn">Vedi Classifica Principale</a>
+                </div>
+                <div class="sidebar-box">
+                    <h3>Sponsorizzato da</h3>
+                    <img src="https://via.placeholder.com/250x150/eeeeee?text=Banner+Sponsor" alt="Sponsor" class="sponsor-banner">
+                    <p class="sponsor-tag">Annuncio</p>
+                </div>
+                <div class="sidebar-box">
+                    <h3>Vuoi Partecipare?</h3>
+                    <p>Entrare in classifica è semplice! Condividi la tua arte e fatti votare dalla community.</p>
+                    <button id="sidebar-participate-btn" class="button-secondary">Scopri Come</button>
+                </div>
+            </aside>
+        </div>
+    </main>
+    
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p>© 2025 TheItalianPoetry. Tutti i diritti riservati.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Termini di Servizio</a>
+                <a href="#">Disclaimer</a>
+            </div>
+            <div class="footer-social">
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="submission-modal" class="modal-backdrop hidden">
+        <div class="modal-content">
+            <button id="close-submission-modal-btn" class="modal-close-btn" aria-label="Chiudi modulo di invio">&times;</button>
+            <h2>Invia la Tua Poesia!</h2>
+            <p>Siamo entusiasti di leggere le tue creazioni! Qui puoi inviare la tua poesia e condividere la tua arte con la nostra community.</p>
+            <form id="submission-form">
+                <div class="form-group">
+                    <label for="poem-title">Titolo della tua poesia</label>
+                    <input type="text" id="poem-title" placeholder="Inserisci qui il titolo" required>
+                </div>
+                <div class="form-group">
+                    <label for="poem-content">La tua poesia</label>
+                    <textarea id="poem-content" placeholder="Incolla o scrivi qui la tua poesia..." rows="10" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="author-firstname">Nome</label>
+                    <input type="text" id="author-firstname" placeholder="Il tuo nome">
+                </div>
+                <div class="form-group">
+                    <label for="author-lastname">Cognome</label>
+                    <input type="text" id="author-lastname" placeholder="Il tuo cognome">
+                </div>
+                <div class="form-group">
+                    <label for="author-instagram">Instagram (Opzionale)</label>
+                    <input type="text" id="author-instagram" placeholder="Il tuo handle (senza @)">
+                </div>
+                <div class="form-group-checkbox">
+                    <input type="checkbox" id="anonymous-checkbox">
+                    <label for="anonymous-checkbox">Desidero rimanere anonimo/a</label>
+                </div>
+                <button type="submit" class="button-primary">Invia la mia Poesia</button>
+                <p id="form-message" role="status" aria-live="polite"></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="voting-modal" class="modal-backdrop hidden">
+        <div class="modal-content">
+            <button id="close-voting-modal-btn" class="modal-close-btn" aria-label="Chiudi modulo di votazione">&times;</button>
+            <div id="vote-poem-details">
+                <h2 id="vote-poem-title">Titolo della Poesia</h2>
+                <p id="vote-poem-author" class="poem-author">di Nome Autore</p>
+                <div id="vote-poem-content" class="poem-text-container"></div>
+            </div>
+            <div class="voting-area">
+                <h3>Il tuo voto:</h3>
+                <div class="star-rating" role="radiogroup" aria-label="Valuta questa poesia con le stelle">
+                    <input type="radio" id="star1" name="rating" value="1" class="sr-only">
+                    <label for="star1" class="star" aria-label="1 stella"><i class="fa-regular fa-star"></i></label>
+                    <input type="radio" id="star2" name="rating" value="2" class="sr-only">
+                    <label for="star2" class="star" aria-label="2 stelle"><i class="fa-regular fa-star"></i></label>
+                    <input type="radio" id="star3" name="rating" value="3" class="sr-only">
+                    <label for="star3" class="star" aria-label="3 stelle"><i class="fa-regular fa-star"></i></label>
+                    <input type="radio" id="star4" name="rating" value="4" class="sr-only">
+                    <label for="star4" class="star" aria-label="4 stelle"><i class="fa-regular fa-star"></i></label>
+                    <input type="radio" id="star5" name="rating" value="5" class="sr-only">
+                    <label for="star5" class="star" aria-label="5 stelle"><i class="fa-regular fa-star"></i></label>
+                </div>
+                <input type="hidden" id="vote-poem-id">
+                <button id="submit-vote-btn" class="button-primary">Invia Voto</button>
+                <p id="vote-form-message" role="status" aria-live="polite"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="how-to-modal" class="modal-backdrop hidden">
+        <div class="modal-content">
+            <button id="close-how-to-modal-btn" class="modal-close-btn" aria-label="Chiudi finestra Come Partecipare">&times;</button>
+            <h2>Come Partecipare</h2>
+            <p>Entrare nella nostra community è un processo semplice e trasparente. Ecco i tre passaggi chiave:</p>
+            <h3>1. Accedi con Google</h3>
+            <p>Per garantire l'autenticità e prevenire abusi, l'invio di poesie richiede l'accesso tramite un account Google. È un passo veloce e sicuro che ci aiuta a mantenere la community affidabile.</p>
+            <h3>2. Invia la Tua Poesia</h3>
+            <p>Una volta effettuato l'accesso, clicca su "Partecipa!" e compila il form. Puoi firmare la tua opera con il tuo nome, restare anonimo e, se vuoi, aggiungere il tuo profilo Instagram per ottenere maggiore visibilità.</p>
+            <h3>3. Vota e Scala la Classifica</h3>
+            <p>La nostra classifica è basata sul voto popolare. Leggi le opere degli altri artisti e sostieni quelle che ami di più. I 10 classificati di ogni mese verranno celebrati sulla nostra pagina Instagram ufficiale.</p>
+            <p style="text-align: center; font-weight: 600; margin-top: 2rem;">In bocca al lupo per la tua creatività poetica!</p>
+            <button id="how-to-submit-btn" class="button-primary full-width-btn">Invia la mia Poesia Ora!</button>
+        </div>
+    </div>
+
+    <div id="about-us-modal" class="modal-backdrop hidden">
+        <div class="modal-content">
+            <button id="close-about-us-modal-btn" class="modal-close-btn" aria-label="Chiudi finestra Chi Siamo">&times;</button>
+            <h2>Chi Siamo</h2>
+            <p><strong>TheItalianPoetry</strong> nasce dalla pura passione per l'arte poetica e dalla volontà di creare uno spazio libero e accessibile dove i talenti possano emergere grazie al merito e all'apprezzamento della community.</p>
+            <p>Non siamo un'entità a scopo di lucro. Ogni risorsa generata tramite il supporto pubblicitario viene reinvestita per mantenere e migliorare la piattaforma, garantendo che rimanga sempre gratuita per tutti gli scrittori e lettori.</p>
+            <h3>Vuoi unirti a noi?</h3>
+            <p>Crediamo nella collaborazione. Periodicamente apriamo le selezioni per entrare a far parte del team di amministrazione e curatela del progetto. Seguici sui nostri canali social per restare aggiornato!</p>
+        </div>
+    </div>
+
+	
+
+
+</body>
+</html>
